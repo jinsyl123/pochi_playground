@@ -30,7 +30,7 @@ Identifies potential risks that could harm Pochi’s brand or make engagement in
 - 0 points: No red flags—clean discussion, relevant audience, and low competition.
 
 **Total Score and Verdict**
-The total score (out of 10) determines the engagement decision:
+The total score (out of 8) determines the engagement decision:
 - 7-8 (DEFINITELY ENGAGE): High alignment with Pochi’s audience and value prop, strong engagement metrics, low competition, and no red flags. Reply with a value-driven, anti-promotional comment that builds on the post’s insight.
 - 5–6 (GOOD TARGET): Solid alignment with developer audience or topic, decent engagement, and minimal red flags. Engage with a carefully crafted reply to subtly connect to Pochi’s value prop.
 - 3–4 (MAYBE/PASS): Partial relevance or challenging connection to Pochi’s focus. Consider skipping unless the engagement metrics are exceptional and a natural reply is feasible.
