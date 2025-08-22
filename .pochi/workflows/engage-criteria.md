@@ -31,10 +31,10 @@ Identifies potential risks that could harm Pochi’s brand or make engagement in
 
 **Total Score and Verdict**
 The total score (out of 10) determines the engagement decision:
-- 8–10 (DEFINITELY ENGAGE): High alignment with Pochi’s audience and value prop, strong engagement metrics, low competition, and no red flags. Reply with a value-driven, anti-promotional comment that builds on the post’s insight.
-- 6–7 (GOOD TARGET): Solid alignment with developer audience or topic, decent engagement, and minimal red flags. Engage with a carefully crafted reply to subtly connect to Pochi’s value prop.
-- 4–5 (MAYBE/PASS): Partial relevance or challenging connection to Pochi’s focus. Consider skipping unless the engagement metrics are exceptional and a natural reply is feasible.
-- 0–3 (SKIP): Misaligned audience, irrelevant topic, or significant red flags. Avoid engagement to focus on better opportunities.
+- 7-8 (DEFINITELY ENGAGE): High alignment with Pochi’s audience and value prop, strong engagement metrics, low competition, and no red flags. Reply with a value-driven, anti-promotional comment that builds on the post’s insight.
+- 5–6 (GOOD TARGET): Solid alignment with developer audience or topic, decent engagement, and minimal red flags. Engage with a carefully crafted reply to subtly connect to Pochi’s value prop.
+- 3–4 (MAYBE/PASS): Partial relevance or challenging connection to Pochi’s focus. Consider skipping unless the engagement metrics are exceptional and a natural reply is feasible.
+- 0–2 (SKIP): Misaligned audience, irrelevant topic, or significant red flags. Avoid engagement to focus on better opportunities.
 
 **Focus Areas for Pochi**
 Prioritize posts about:
