@@ -17,13 +17,13 @@ Measures the post's reach and interaction level to assess visibility potential.
   
 **2. Audience Relevance (3 points)**
 Evaluates how well the post’s audience and topic align with Pochi’s target market (developers) and focus (coding automation, productivity, AI tools).
-- 3/3: Direct developer audience AND highly relevant topic (e.g., coding workflows, developer productivity, AI coding tools, technical frustrations, or automation).
-- 2/3: Developer audience OR tangentially relevant topic (e.g., hiring practices, freelance developer life, general AI/ML discussions, or open-source community dynamics).
+- 3/3: Direct developer audience AND highly relevant topic (e.g., AI tools for coding workflows, code generation, debugging assistance, developer productivity workflows, coding automation, or technical frustrations with development processes).
+- 2/3: Developer audience OR tangentially relevant topic (e.g., hiring practices, freelance developer life or open-source community dynamics).
 - 1/3: Broad tech audience but not developer-focused OR unrelated topic (e.g., consumer apps, corporate strategy, non-coding automation like web scraping).
-- 0/3: Completely unrelated audience (e.g., crypto, automotive, lifestyle) OR off-topic for Pochi’s value proposition (e.g., office aesthetics, non-technical discussions).
+- 0/3: Completely unrelated audience (e.g., crypto, automotive, lifestyle) OR AI applications outside coding/development contexts (e.g., AI vision, content creation, design tools, personal productivity AI) OR off-topic for Pochi's value proposition (e.g., office aesthetics, non-technical discussions).
 
 **Common Issues to Avoid in This Category:**
-- Not AI/dev tool related topic: Skip if not directly or tangentially related to coding, AI tools, or developer productivity.
+- Not coding-specific AI: Skip AI applications for vision, content creation, design, personal use - only engage with AI tools specifically for coding/development
 - Quite personal sharing: Skip if the post is too personal (e.g., individual stories without broader dev relevance), as it may not align with audience resonance.
 - Engaged with person too often: Track past interactions; skip if you've engaged with the same user more than 3 times in a week to avoid over-engagement.
 - Engage with leadership roles from competitor companies: Skip to avoid brand risk; treat as competitors.
