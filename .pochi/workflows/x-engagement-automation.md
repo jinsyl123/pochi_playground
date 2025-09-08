@@ -25,22 +25,49 @@ Prioritize sourcing at least 3 quality posts scoring 4-6 in a single session by 
     - **Sanity Check**: [Pass/Fail, Reason]
     - **Reply Strengths**: [Explanation covering alignment, tone, engagement]
 
-**Step 8**: Commit only this file
+**Step 8**: Commit only this new session file
 ```
 git reset  # Clear Git index
-git status --short  # Log for debugging
-git add "$OUTPUT_FILE"  # Stage only the new file
+git checkout main
+git pull origin main
+BRANCH="docs/session-analysis-$TIMESTAMP"
+git checkout -b "$BRANCH"
+git reset
+git status --short
+git add "$OUTPUT_FILE"
 COMMIT_MSG="docs(session): add $(echo $TIMESTAMP | sed 's/- / /') analysis"
-git commit -m "$COMMIT_MSG" || { echo "Commit failed; check git status."; exit 1; }
+git commit -m "$COMMIT_MSG" || { echo "Commit failed"; exit 1; }
 ```
 **Step 9**: Create pull request
 ```
-BRANCH="docs/session-analysis-$TIMESTAMP"
-git checkout -b "$BRANCH"
-
-# Check and set remote if not configured
 git remote get-url origin || git remote add origin https://github.com/TabbyML/snowshoe.git
-git push origin "$BRANCH" || { echo "Failed to push branch $BRANCH; check remote config."; exit 1; }
+git push origin "$BRANCH" || { echo "Push failed"; exit 1; }
 PR_TITLE="Session analysis - $(echo $TIMESTAMP | sed 's/- / /')"
-gh pr create --base main --head "$BRANCH" --title "$PR_TITLE" --body "Add Pochi X engagement session analysis for $TIMESTAMP" --reviewer gyxlucy || { echo "Failed to create PR; check gh CLI auth or repo access."; exit 1; }
+gh pr create --base main --head "$BRANCH" --title "$PR_TITLE" --body "Add Pochi X engagement session analysis for $TIMESTAMP" --reviewer gyxlucy || { echo "PR creation failed"; exit 1; }
+
+# Restore stashed changes
+if git stash list | grep -q "Auto-stash"; then
+  git stash pop
+fi
+EOF
+cat << EOF > scripts/check_skip.sh
+#!/bin/bash
+post="\$1"
+link=\$(echo "\$post" | jq -r '.link')
+[ -f engagement_cache.json ] || echo "{}" > engagement_cache.json
+ENGAGE_COUNT=\$(jq --arg link "\$link" '.[ \$link] // 0' engagement_cache.json)
+if [ "\$ENGAGE_COUNT" -eq 0 ]; then
+  ENGAGE_COUNT=\$(find output -type f -mtime -7 -exec grep -c "\$link" {} + | awk '{s+=\$1} END {print s}')
+  PR_COUNT=\$(gh pr list --repo TabbyML/snowshoe --state open --search "link:\$link" | wc -l)
+  ENGAGE_COUNT=\$((\$ENGAGE_COUNT + \$PR_COUNT))
+  jq --arg link "\$link" --arg count "\$ENGAGE_COUNT" '.[ \$link] = (\$count | tonumber)' engagement_cache.json > tmp.json && mv tmp.json engagement_cache.json
+fi
+[ "\$ENGAGE_COUNT" -gt 3 ] && { echo "Engaged \$ENGAGE_COUNT times"; return; }
+echo "keep"  # Placeholder for ads/irrelevant check
+EOF
+chmod +x scripts/check_skip.sh
+cat << EOF > config.sh
+MAX_ATTEMPTS=5
+MAX_POSTS=50
+EOF
 ```
