@@ -25,14 +25,16 @@ Prioritize sourcing at least 3 quality posts scoring 4-6 in a single session by 
     - **Sanity Check**: [Pass/Fail, Reason]
     - **Reply Strengths**: [Explanation covering alignment, tone, engagement]
 
-# Step 8: Commit only this file
+**Step 8**: Commit only this file
+```
 git reset  # Clear Git index
 git status --short  # Log for debugging
 git add "$OUTPUT_FILE"  # Stage only the new file
 COMMIT_MSG="docs(session): add $(echo $TIMESTAMP | sed 's/- / /') analysis"
 git commit -m "$COMMIT_MSG" || { echo "Commit failed; check git status."; exit 1; }
-
-# Step 9: Create pull request
+```
+**Step 9**: Create pull request
+```
 BRANCH="docs/session-analysis-$TIMESTAMP"
 git checkout -b "$BRANCH"
 
@@ -41,3 +43,4 @@ git remote get-url origin || git remote add origin https://github.com/TabbyML/sn
 git push origin "$BRANCH" || { echo "Failed to push branch $BRANCH; check remote config."; exit 1; }
 PR_TITLE="Session analysis - $(echo $TIMESTAMP | sed 's/- / /')"
 gh pr create --base main --head "$BRANCH" --title "$PR_TITLE" --body "Add Pochi X engagement session analysis for $TIMESTAMP" --reviewer gyxlucy || { echo "Failed to create PR; check gh CLI auth or repo access."; exit 1; }
+```
