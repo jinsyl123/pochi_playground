@@ -1,25 +1,74 @@
 # AI Agent Prompt for Pochi X Engagement
 
-**Objective**:  Identify X posts for engagement to maximize likes/replies and grow Pochi’s audience, per `pochi-info.md`. Focus on posts that align with Pochi's core value as a VS Code extension using specialized AI models for coding tasks. Prioritize sourcing at least 3 quality posts scoring 4-6 each execution by scrolling deeper into the timeline if needed.
+**Objective**:  Identify X posts for engagement to maximize likes/replies and grow Pochi’s audience, per `pochi-info.md`. Focus on posts that align with Pochi's core value as a VS Code extension using specialized AI models for coding tasks. 
+
+Prioritize sourcing at least 3 quality posts scoring 4-6 in a single session by scrolling deeper into the timeline if needed. Generate one markdown file per session (e.g., `output/2025-09-04/2025-09-04-1251.md`), organized in a dated folder, containing multiple ENGAGE ✅ posts
 
 **Instructions**:
-1. Use Browser MCP to open X like a human. Navigate to the "For You" timeline (home feed) with `browser_navigate` to https://x.com.
-2. Scroll naturally using `browser_press_key` with "PageDown". Pause 10-15 seconds between major actions. Wait 10-15 seconds after scrolling. If fewer than 3 qualifying posts are found in the initial load, automatically scroll further (repeat "PageDown" 8-10 times per batch, up to 3 batches) to load more content. Verify new posts are loaded by comparing post IDs or content in `browser_snapshot`. Stop if CAPTCHA appears and log: "CAPTCHA detected, halting scroll."
+1. Use Browser MCP to open X like a human. Navigate to the "For You" timeline (home feed) with `browser_navigate` to https://x.com. Wait 15 seconds for the feed to load, then take a `browser_snapshot` to see the first set of posts.
+2. Check the posts in the snapshot using `engage-criteria.md` rules. Get details (link, author, content, likes, time, media) for each. Skip bad ones (Step 4) and score the rest (Step 5). If you find 3 or more good posts (4-6 score), jump to Step 7. If not, scroll for more.
 3. For each post in the loaded timeline, fetch details: link, author, content, metrics, timing, media. Use `browser_snapshot` to capture visible posts. Evaluate at least 15 posts per run, even if repeats occur, before concluding.
-4. Skip Check: Review `outputs/YYYY-MM-DD.md` (last 7 days) for prior engagements (>3/week, skip). For each post, IMMEDIATELY check skip conditions from `engage-criteria.md`. IF ANY SKIP CONDITION = TRUE: Log as skipped, DO NOT SCORE, move to next post.ONLY if ALL skip checks = FALSE, proceed to scoring.
-5. For non-skipped posts, score and generate reply per `engagement-criteria.md`. Perform quick sanity check: Is reply on-topic, accurate to Pochi (per pochi-info.md), and human-like? If No, SKIP or revise. Mandatory log per post: “Score: [X/6]. Sanity Check: [Pass/Fail, Reason (e.g., 'Accurate to Pochi’s VS Code focus, human-like tone')].”
-6. Continue scrolling, loading, and evaluating posts until at least 3 posts scoring 4-6 are identified or 50 posts are evaluated. Log scroll attempts and new posts loaded per batch.
-7. Save results to `outputs/YYYY-MM-DD.md`. If the file exists, append at the end of document with a new section header `## YYYY-MM-DD HH:MM` (use current timestamp). Structure the output under `## Detailed Analysis`, listing posts as `### POST N - ENGAGE ✅` for engages or `### POST N - SKIP ❌` for skips. Include a separate `### Skipped Posts` section with brief logs for all skipped posts (e.g., Link, Author, Skip Reason). End with a `### Summary`: Posts analyzed: X, Posts scoring 4-6: Y (with scores), Recommendations: [e.g., Prioritize high-engagement topics like specialized models].
-8. After saving, print: “Found X posts scoring 4-6: [scores]. Saved to `outputs/YYYY-MM-DD.md.`”
+4. Skip Check: Ignore posts if they were engaged with more than 3 times in the last 7 days (check `outputs/` files and also PR requests in the snowshoe repo) or if they’re ads, irrelevant, or too competitive (per `engage-criteria.md`). Log why you skipped and move on. Only score posts that pass.
+5. Scoring: Rate good posts 0-6 based on `engage-criteria.md` (engagement: 2, relevance: 3, opportunity: 1). A 4-6 score is "ENGAGE ✅". Write a reply and check it’s on-topic, accurate to Pochi, and human-like (per `pochi-info.md`). If not, skip or fix it. Log the score and check result (e.g., “Score: 5/6. Sanity Check: Pass”).
+6. If fewer than 3 good posts are found, scroll to load more. Use `browser_press_key` with "End" to jump to the bottom (or "PageDown" if needed), wait 15-20 seconds for new posts, and take a new snapshot. Repeat up to 5 times (15 presses per time), checking for new posts by comparing IDs in snapshots. Log “New posts: [number]” or “Feed stagnant” if none. If stagnant after 2 tries, refresh with `browser_navigate` to https://x.com/home`, wait 15 seconds, and try again. Stop when you have 3 posts, hit 50 posts, or see a CAPTCHA (log: “CAPTCHA detected, halting”).
+7. Save all good posts (4-6 score) in one file named by date and time (e.g., `output/2025-09-04/2025-09-04-1607.md`). Include:
+- A header `## Session Analysis - [YYYY-MM-DD HH:MM]`.
+- **Summary**: Number of posts analyzed, number of ENGAGE ✅ posts (target: 3+).
+- `### ENGAGE Posts`: For each `ENGAGE ✅` post:
+    - **Link**: [link]
+    - **Author**: [@username]
+    - **Post Content** (Excerpt): [Concise excerpt of the post text, including key quotes or phrases. Describe any media, e.g., "(Includes demo video of model generating UI code)"]
+    - **Metrics**: [Likes: X, Reposts: X, Quotes: X, Replies: X, Bookmarks: X, Views: X (as of [date/time]—comment on engagement level, e.g., 'Strong for niche AI topic')"]
+    - **Skip Check**: [Yes/No, Reason, including prior engagements count]
+    - **Analysis**: Score [X/6] (Engagement: [X/2], Relevance: [X/3], Opportunity: [X/1])
+    - **Suggested Reply**: [reply]
+    - **Sanity Check**: [Pass/Fail, Reason]
+    - **Reply Strengths**: [Explanation covering alignment, tone, engagement]
 
-Use this per-post template:
-- **Link**: [link]
-- **Author**: [@username]
-- **Post Content** (Excerpt): [Concise excerpt of the post text, including key quotes or phrases. Describe any media, e.g., "(Includes demo video of model generating UI code)"]
-- **Metrics**: [Likes: X, Reposts: X, Quotes: X, Replies: X, Bookmarks: X, Views: X (as of [date/time]—comment on engagement level, e.g., 'Strong for niche AI topic')"]
-- **Skip Check**: [Yes/No, Reason, including prior engagements count]
-- **Analysis**: Score [X/6] (Engagement: [X/2], Relevance: [X/3], Opportunity: [X/1])
-- **Suggested Reply**: [reply]
-- **Sanity Check**: [Pass/Fail, Reason]
-- **Reply Strengths**: [Explanation covering alignment, tone, engagement]
-- **Edits/Feedback**: [Lucy: Add comments here, e.g., “Posted as-is” or “Edited: [Changes], Reason: [Why]” or “Skipped: [Reason]”] Include skipped posts section and summary: posts analyzed, posts scoring 4-6, scores, recommendations.
+**Step 8**: Commit only this new session file
+```
+git reset  # Clear Git index
+git checkout main
+git pull origin main
+BRANCH="docs/session-analysis-$TIMESTAMP"
+git checkout -b "$BRANCH"
+git reset
+git status --short
+git add "$OUTPUT_FILE"
+COMMIT_MSG="docs(session): add $(echo $TIMESTAMP | sed 's/- / /') analysis"
+git commit -m "$COMMIT_MSG" || { echo "Commit failed"; exit 1; }
+```
+**Step 9**: Create pull request
+```
+git remote get-url origin || git remote add origin https://github.com/TabbyML/snowshoe.git
+git push origin "$BRANCH" || { echo "Push failed"; exit 1; }
+PR_TITLE="Session analysis - $(echo $TIMESTAMP | sed 's/- / /')"
+gh pr create --base main --head "$BRANCH" --title "$PR_TITLE" --body "Add Pochi X engagement session analysis for $TIMESTAMP" --reviewer gyxlucy || { echo "PR creation failed"; exit 1; }
+
+# Restore stashed changes
+if git stash list | grep -q "Auto-stash"; then
+  git stash pop
+fi
+EOF
+cat << EOF > scripts/check_skip.sh
+#!/bin/bash
+post="\$1"
+link=\$(echo "\$post" | jq -r '.link')
+[ -f engagement_cache.json ] || echo "{}" > engagement_cache.json
+ENGAGE_COUNT=\$(jq --arg link "\$link" '.[ \$link] // 0' engagement_cache.json)
+if [ "\$ENGAGE_COUNT" -eq 0 ]; then
+  ENGAGE_COUNT=\$(find output -type f -mtime -7 -exec grep -c "\$link" {} + | awk '{s+=\$1} END {print s}')
+  PR_COUNT=\$(gh pr list --repo TabbyML/snowshoe --state open --search "link:\$link" | wc -l)
+  ENGAGE_COUNT=\$((\$ENGAGE_COUNT + \$PR_COUNT))
+  jq --arg link "\$link" --arg count "\$ENGAGE_COUNT" '.[ \$link] = (\$count | tonumber)' engagement_cache.json > tmp.json && mv tmp.json engagement_cache.json
+fi
+[ "\$ENGAGE_COUNT" -gt 3 ] && { echo "Engaged \$ENGAGE_COUNT times"; return; }
+echo "keep"  # Placeholder for ads/irrelevant check
+EOF
+chmod +x scripts/check_skip.sh
+cat << EOF > config.sh
+MAX_ATTEMPTS=5
+MAX_POSTS=50
+EOF
+```
+
