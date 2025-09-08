@@ -25,6 +25,18 @@ Prioritize sourcing at least 3 quality posts scoring 4-6 in a single session by 
     - **Sanity Check**: [Pass/Fail, Reason]
     - **Reply Strengths**: [Explanation covering alignment, tone, engagement]
 
-8. After saving the session file (e.g., `output/2025-09-04/2025-09-04-1628.md`), create a PR for that session to https://github.com/TabbyML/snowshoe using `create-pr.md`. Use a unique branch like `docs/session-analysis-2025-09-04-1628`, a commit message `docs(session): add 2025-09-04 16:28 analysis`, and title `Session analysis - 2025-09-04 16:28`. Add Lucy (username: gyxlucy) as reviewer with `--reviewer gyxlucy`. Work in the `snowshoe` folder.
-
-Only add and commit the new session file to the branch from the local snowshoe repo (e.g., `git add output/2025-09-04/2025-09-04-1628.md` and `git commit -m "docs(session): add 2025-09-04 16:28 analysis"`). Check GitHub login with `gh auth status`; if not logged in, run `gh auth login` with a token for `TabbyML/snowshoe` (needs `repo` access). Skip the PR if fewer than 3 good posts (log: 'Fewer than 3 posts; no PR'). If the PR fails, log the issue, push the branch, and give a manual link (e.g., https://github.com/TabbyML/snowshoe/pull/new/docs/session-analysis-YYYY-MM-DD-HHMM). Print: 'Generated session file output/2025-09-04/2025-09-04-1628.md with X good posts. PR made if X >= 3.'
+8. **Create PR from a Clean Worktree**: After saving the session file, create a pull request using a `git worktree`. This creates a separate, temporary folder to prepare the PR, leaving your main workspace untouched and avoiding the need for `git stash`.
+   - **Pre-requisites**: Check GitHub login with `gh auth status`; if not logged in, run `gh auth login`. Skip PR creation if fewer than 3 good posts are found.
+   - **Command**: Execute the following command, replacing `YOUR_SESSION_FILE.md` with the actual file path.
+   ```bash
+   FILE_PATH="output/2025-09-04/YOUR_SESSION_FILE.md" && \
+   BRANCH_NAME="docs/session-$(basename $FILE_PATH .md)" && \
+   WORKTREE_DIR="./pr-worktree" && \
+   git fetch origin && \
+   git worktree add -B "$BRANCH_NAME" "$WORKTREE_DIR" origin/main && \
+   cp "$FILE_PATH" "$WORKTREE_DIR/" && \
+   (cd "$WORKTREE_DIR" && git add . && git commit -m "docs(session): add $(basename $FILE_PATH .md)" && git push -u origin "$BRANCH_NAME" && gh pr create --base main --title "Session analysis for $(basename $FILE_PATH .md)" --body "$(cat \"$(basename \"$FILE_PATH\")\")" --reviewer gyxlucy) && \
+   git worktree remove "$WORKTREE_DIR"
+   ```
+   - **Failure Handling**: If the PR fails, log the issue, push the branch, and give a manual link (e.g., `https://github.com/TabbyML/snowshoe/pull/new/BRANCH_NAME`).
+   - **Final Output**: Print: 'Generated session file [FILE_PATH] with X good posts. PR made if X >= 3.'
